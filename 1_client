@@ -1,0 +1,39 @@
+#client
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+
+    static Socket s;
+    static DataInputStream dis;
+    static DataOutputStream dout;
+
+#Sending
+try{
+        String msg="";
+        msg=msg_text.getText();
+        dout.writeUTF(msg);
+        msg_text.setText("");
+        }
+        catch(Exception e)
+        {
+            //Handled here
+        }
+
+#main
+try{
+        String msgin="";
+        s=new Socket("127.0.0.1",1201);
+        dis=new DataInputStream(s.getInputStream());
+        dout=new DataOutputStream(s.getOutputStream());
+        while(!msgin.equals("exit"))
+        {
+            msgin=dis.readUTF();
+            msg_area.setText(msg_area.getText()+"\n Server:"+msgin);
+        }
+          
+        }
+        catch(Exception e)
+        {
+          //Exception handled here  
+        }
