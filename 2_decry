@@ -1,0 +1,64 @@
+import java.awt.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import javax.swing.*;
+
+    
+    FileOutputStream fos;
+    FileDialog fd;
+    DatagramSocket ds;
+    DatagramPacket dp;
+    byte b[]=new byte[1048576];
+    int size;
+
+ds=new DatagramSocket(2015);
+
+    private void decryptActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        int key=Integer.parseInt(JOptionPane.showInputDialog("Enter a key"));
+        for(int i=0; i<b.length; i++){
+            char ch=(char)b[i];
+            if(Character.isLetter(ch)){
+                if(Character.isLowerCase(ch)){
+                    ch=(char)('a'+(ch-'a'-key+26)%26);
+                }
+                else{
+                    ch=(char)('A'+(ch-'A'-key+26)%26);
+                }
+                b[i]=(byte)ch;
+            }
+            else if(Character.isDigit(ch)){
+                ch=(char)('0'+(ch-'0'-key+10)%10);
+                b[i]=(byte)ch;
+            }
+        }
+        area.setText(new String(b));
+    } 
+
+    private void saveActionPerformed(java.awt.event.ActionEvent evt) {                                     
+        // TODO add your handling code here:
+        try{
+        FileOutputStream fos=null;
+        FileDialog fd = new FileDialog(this, "save", FileDialog.SAVE);
+        fd.show();
+        fos=new FileOutputStream(fd.getDirectory()+fd.getFile());
+        fos.write(b);
+        }catch(Exception e){}
+    } 
+
+    private void receiveActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // TODO add your handling code here:
+        dp=new DatagramPacket(b, b.length);
+        try{
+            ds.receive(dp);
+        }catch(Exception e){}
+        b=dp.getData();
+        size=dp.getLength();
+        area.setText(new String(b, 0, size));
+    }
+
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {                                      
+        // TODO add your handling code here:
+        area.setText(null);
+    }    
