@@ -1,0 +1,41 @@
+#Server
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+static ServerSocket ss;
+static Socket s;
+static DataInputStream dis;
+static DataOutputStream dout;
+
+SendButton
+        try{
+        String msg="";
+        msg=msg_text.getText();
+        dout.writeUTF(msg);
+        msg_text.setText("");
+        }
+        catch(Exception e)
+        {
+            //Handled here
+        }
+
+in main
+try{
+        String msgin="";
+        ss=new ServerSocket(1201);
+        s=ss.accept();
+        dis=new DataInputStream(s.getInputStream());
+        dout=new DataOutputStream(s.getOutputStream());
+        while(!msgin.equals("exit"))
+        {
+            msgin=dis.readUTF();
+            msg_area.setText(msg_area.getText()+"\n Client:"+msgin);
+        }
+          
+        }
+        catch(Exception e){
+            //exception hand;ed here
+        }
